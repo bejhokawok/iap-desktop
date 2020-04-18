@@ -50,6 +50,7 @@ namespace Google.Solutions.IapDesktop.Application.Windows
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WaitDialog));
             this.cancelButton = new System.Windows.Forms.Button();
             this.messageLabel = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
@@ -59,7 +60,7 @@ namespace Google.Solutions.IapDesktop.Application.Windows
             // cancelButton
             // 
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(270, 57);
+            this.cancelButton.Location = new System.Drawing.Point(266, 75);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(82, 28);
             this.cancelButton.TabIndex = 0;
@@ -70,7 +71,7 @@ namespace Google.Solutions.IapDesktop.Application.Windows
             // messageLabel
             // 
             this.messageLabel.AutoSize = true;
-            this.messageLabel.Location = new System.Drawing.Point(9, 38);
+            this.messageLabel.Location = new System.Drawing.Point(12, 18);
             this.messageLabel.Name = "messageLabel";
             this.messageLabel.Size = new System.Drawing.Size(19, 13);
             this.messageLabel.TabIndex = 1;
@@ -78,9 +79,9 @@ namespace Google.Solutions.IapDesktop.Application.Windows
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(12, 12);
+            this.progressBar.Location = new System.Drawing.Point(0, 110);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(340, 23);
+            this.progressBar.Size = new System.Drawing.Size(360, 5);
             this.progressBar.TabIndex = 2;
             // 
             // timer
@@ -92,13 +93,15 @@ namespace Google.Solutions.IapDesktop.Application.Windows
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(362, 111);
+            this.ClientSize = new System.Drawing.Size(360, 115);
             this.ControlBox = false;
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.messageLabel);
             this.Controls.Add(this.cancelButton);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "WaitDialog";
