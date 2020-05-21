@@ -31,7 +31,7 @@ namespace Google.Solutions.LogAnalysis.Test.History
     public class TestNodeSetHistory
     {
         [Test]
-        public void WhenInstancesAreFromFleet_ThenSetIsEmpty()
+        public void WhenAllInstancesAreFromFleet_ThenSetsContainRightNodes()
         {
             var instances = new[]
             {
@@ -48,35 +48,19 @@ namespace Google.Solutions.LogAnalysis.Test.History
                     })
             };
 
-            var nodes = NodeSetHistory.FromInstancyHistory(instances, false);
-            Assert.IsFalse(nodes.Nodes.Any());
+            var fleetOnly = NodeSetHistory.FromInstancyHistory(instances, true, false);
+            var soleTenantOnly = NodeSetHistory.FromInstancyHistory(instances, false, true);
+            var all = NodeSetHistory.FromInstancyHistory(instances, true, true);
+            var none = NodeSetHistory.FromInstancyHistory(instances, false, false);
+            
+            Assert.AreEqual(1, fleetOnly.Nodes.Count());
+            Assert.AreEqual(1, all.Nodes.Count());
+            Assert.IsFalse(soleTenantOnly.Nodes.Any());
+            Assert.IsFalse(none.Nodes.Any());
         }
 
         [Test]
-        public void WhenInstancesAreFromFleetAndIncludeFleetIsTrue_ThenSetIncludesNodeForFleet()
-        {
-            var instances = new[]
-            {
-                new InstanceHistory(
-                    1,
-                    new VmInstanceReference("project-1", "zone-1", "instance-1"),
-                    InstanceHistoryState.MissingTenancy,
-                    null,
-                    new []
-                    {
-                        new InstancePlacement(
-                            new DateTime(2019, 12, 1, 0, 0, 0, DateTimeKind.Utc),
-                            new DateTime(2019, 12, 2, 0, 0, 0, DateTimeKind.Utc))
-                    })
-            };
-
-            var nodes = NodeSetHistory.FromInstancyHistory(instances, true);
-            Assert.IsTrue(nodes.Nodes.Any());
-            Assert.IsNull(nodes.Nodes.First().ServerId);
-        }
-
-        [Test]
-        public void WhenInstanceHasNoPlacement_ThenSetIsEmpty()
+        public void WhenInstanceHasNoPlacement_ThenAllSetsAreEmpty()
         {
             var instances = new[]
             {
@@ -88,8 +72,15 @@ namespace Google.Solutions.LogAnalysis.Test.History
                     null)
             };
 
-            var nodes = NodeSetHistory.FromInstancyHistory(instances, false);
-            Assert.IsFalse(nodes.Nodes.Any());
+            var fleetOnly = NodeSetHistory.FromInstancyHistory(instances, true, false);
+            var soleTenantOnly = NodeSetHistory.FromInstancyHistory(instances, false, true);
+            var all = NodeSetHistory.FromInstancyHistory(instances, true, true);
+            var none = NodeSetHistory.FromInstancyHistory(instances, false, false);
+
+            Assert.IsFalse(fleetOnly.Nodes.Any());
+            Assert.IsFalse(soleTenantOnly.Nodes.Any());
+            Assert.IsFalse(all.Nodes.Any());
+            Assert.IsFalse(none.Nodes.Any());
         }
 
         [Test]
@@ -119,7 +110,7 @@ namespace Google.Solutions.LogAnalysis.Test.History
                     })
             };
 
-            var nodes = NodeSetHistory.FromInstancyHistory(instances, false);
+            var nodes = NodeSetHistory.FromInstancyHistory(instances, false, true);
             Assert.AreEqual(2, nodes.Nodes.Count());
 
             var server1 = nodes.Nodes.First(n => n.ServerId == "server-1");
@@ -156,7 +147,7 @@ namespace Google.Solutions.LogAnalysis.Test.History
                     })
             };
 
-            var nodes = NodeSetHistory.FromInstancyHistory(instances, false);
+            var nodes = NodeSetHistory.FromInstancyHistory(instances, false, true);
             Assert.AreEqual(2, nodes.Nodes.Count());
 
             var server1 = nodes.Nodes.First(n => n.ServerId == "server-1");
@@ -199,7 +190,7 @@ namespace Google.Solutions.LogAnalysis.Test.History
                     })
             };
 
-            var nodes = NodeSetHistory.FromInstancyHistory(instances, false);
+            var nodes = NodeSetHistory.FromInstancyHistory(instances, false, true);
             Assert.AreEqual(1, nodes.Nodes.Count());
 
             var server1 = nodes.Nodes.First(n => n.ServerId == "server-1");
@@ -239,7 +230,7 @@ namespace Google.Solutions.LogAnalysis.Test.History
                     })
             };
 
-            var nodes = NodeSetHistory.FromInstancyHistory(instances, false);
+            var nodes = NodeSetHistory.FromInstancyHistory(instances, false, true);
             Assert.AreEqual(1, nodes.Nodes.Count());
 
             var server1 = nodes.Nodes.First(n => n.ServerId == "server-1");
